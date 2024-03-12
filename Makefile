@@ -1,13 +1,3 @@
-KVERSION := `uname -r`
-KDIR := /lib/modules/${KVERSION}/build
-
-default:
-	$(MAKE) -C $(KDIR) M=$$PWD
-
-install: default
-	$(MAKE) -C $(KDIR) M=$$PWD modules_install
-	depmod -A
-
-clean:
-	$(MAKE) -C $(KDIR) M=$$PWD clean
+install:
+	cp -r src/* /usr/src/dasharo-acpi-0.0.1 && dkms build -m dasharo-acpi -v 0.0.1 --force && dkms install -m dasharo-acpi -v 0.0.1 --force
 
