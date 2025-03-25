@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0
+Upstream-Name: dasharo-acpi
+Upstream-Contact: Michał Kopeć <michal.kopec@3mdeb.com>
+Source: https://github.com/Dasharo/dasharo-acpi-dkms.git
+
+Files: *
+Copyright: 3mdeb Sp. z o.o.
+License: GPL-2 or later
+
