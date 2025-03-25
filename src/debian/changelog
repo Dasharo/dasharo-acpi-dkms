@@ -1,0 +1,5 @@
+dasharo-acpi-dkms (0.0.1) UNRELEASED; urgency=medium
+
+  * Initial release. (Closes: #XXXXXX)
+
+ -- Michał Kopeć <michal.kopec@3mdeb.com>  Tue, 25 Mar 2025 15:44:14 +0100
