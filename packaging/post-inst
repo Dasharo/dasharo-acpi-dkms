@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dkms build dasharo-acpi/0.0.1
+dkms install dasharo-acpi/0.0.1
