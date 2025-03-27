@@ -13,11 +13,8 @@
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
 #include <linux/init.h>
-#include <linux/input.h>
 #include <linux/kernel.h>
-#include <linux/leds.h>
 #include <linux/module.h>
-#include <linux/pci_ids.h>
 #include <linux/sysfs.h>
 #include <linux/types.h>
 
