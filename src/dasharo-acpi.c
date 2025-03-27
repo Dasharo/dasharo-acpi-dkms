@@ -42,7 +42,7 @@ enum dasharo_fan {
 	DASHARO_FAN_MAX,
 };
 
-static char * dasharo_temp_group_name[DASHARO_TEMPERATURE_MAX] = {
+static char *dasharo_temp_group_name[DASHARO_TEMPERATURE_MAX] = {
 	[DASHARO_TEMPERATURE_CPU_PACKAGE] = "CPU Package",
 	[DASHARO_TEMPERATURE_CPU_CORE] = "CPU Core",
 	[DASHARO_TEMPERATURE_GPU] = "GPU",
@@ -50,7 +50,7 @@ static char * dasharo_temp_group_name[DASHARO_TEMPERATURE_MAX] = {
 	[DASHARO_TEMPERATURE_CHASSIS] = "Chassis",
 };
 
-static char * dasharo_fan_group_name[DASHARO_FAN_MAX] = {
+static char *dasharo_fan_group_name[DASHARO_FAN_MAX] = {
 	[DASHARO_FAN_CPU] = "CPU",
 	[DASHARO_FAN_GPU] = "GPU",
 	[DASHARO_FAN_CHASSIS] = "Chassis",
@@ -138,9 +138,8 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 							    data->sensors[channel].index,
 							    &value);
 
-			if (ret > 0) {
+			if (ret > 0)
 				*val = value * 1000;
-			}
 		}
 	} else if (type == hwmon_fan) {
 		if (attr == hwmon_fan_input) {
@@ -150,9 +149,8 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 							    data->fan_tachs[channel].index,
 							    &value);
 
-			if (ret > 0) {
+			if (ret > 0)
 				*val = value;
-			}
 		}
 	} else if (type == hwmon_pwm) {
 		if (attr == hwmon_pwm_input) {
@@ -162,9 +160,8 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 							    data->fan_tachs[channel].index,
 							    &value);
 
-			if (ret > 0) {
+			if (ret > 0)
 				*val = value;
-			}
 		}
 	}
 
@@ -192,17 +189,14 @@ static umode_t dasharo_hwmon_is_visible(const void *drvdata, enum hwmon_sensor_t
 {
 	const struct dasharo_data *data = drvdata;
 
-	if (channel < data->sensors_count && type == hwmon_temp) {
+	if (channel < data->sensors_count && type == hwmon_temp)
 		return 0444;
-	}
 
-	if (channel < data->fan_pwms_count && type == hwmon_pwm) {
+	if (channel < data->fan_pwms_count && type == hwmon_pwm)
 		return 0444;
-	}
 
-	if (channel < data->fan_tachs_count && type == hwmon_fan) {
+	if (channel < data->fan_tachs_count && type == hwmon_fan)
 		return 0444;
-	}
 
 	return 0;
 }
@@ -297,7 +291,8 @@ static const struct hwmon_chip_info dasharo_hwmon_chip_info = {
 	.info = dasharo_hwmon_info,
 };
 
-static void dasharo_fill_sensors(struct dasharo_data *data) {
+static void dasharo_fill_sensors(struct dasharo_data *data)
+{
 	int group = 0;
 	int count = 0;
 
@@ -315,7 +310,8 @@ static void dasharo_fill_sensors(struct dasharo_data *data) {
 	}
 }
 
-static void dasharo_fill_fan_tachs(struct dasharo_data *data) {
+static void dasharo_fill_fan_tachs(struct dasharo_data *data)
+{
 	int group = 0;
 	int count = 0;
 
@@ -333,7 +329,8 @@ static void dasharo_fill_fan_tachs(struct dasharo_data *data) {
 	}
 }
 
-static void dasharo_fill_fan_pwms(struct dasharo_data *data) {
+static void dasharo_fill_fan_pwms(struct dasharo_data *data)
+{
 	int group = 0;
 	int count = 0;
 
