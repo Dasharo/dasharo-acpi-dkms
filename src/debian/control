@@ -1,0 +1,13 @@
+Source: dasharo-acpi-dkms
+Section: kernel
+Priority: optional
+Maintainer: Michał Kopeć <michal.kopec@3mdeb.com>
+Build-Depends: debhelper (>= 10), dkms
+Standards-Version: 4.5.0
+Homepage: https://github.com/dasharo/dasharo-acpi-dkms.git
+
+Package: dasharo-acpi-dkms
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, dkms
+Description: DKMS source for dasharo-acpi
+ This package provides the DKMS source for the dasharo-acpi kernel module.
