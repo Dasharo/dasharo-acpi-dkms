@@ -99,7 +99,7 @@ static int dasharo_get_feature_cap_count(struct dasharo_data *data, int feat, in
 	return -ENODEV;
 }
 
-static int dasharo_read_value_by_cap_idx(struct dasharo_data *data, const char *method, int cap, int index, long *value)
+static int dasharo_read_value_by_cap_idx(struct dasharo_data *data, char *method, int cap, int index, long *value)
 {
 	union acpi_object obj[2];
 	struct acpi_object_list obj_list;
@@ -133,10 +133,10 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 	if (type == hwmon_temp) {
 		if (attr == hwmon_temp_input) {
 			ret = dasharo_read_value_by_cap_idx(data,
-						      "GTMP",
-						      data->sensors[channel].cap,
-						      data->sensors[channel].index,
-						      &value);
+							    "GTMP",
+							    data->sensors[channel].cap,
+							    data->sensors[channel].index,
+							    &value);
 
 			if (ret > 0) {
 				*val = value * 1000;
@@ -145,10 +145,10 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 	} else if (type == hwmon_fan) {
 		if (attr == hwmon_fan_input) {
 			ret = dasharo_read_value_by_cap_idx(data,
-						      "GFTH",
-						      data->fan_tachs[channel].cap,
-						      data->fan_tachs[channel].index,
-						      &value);
+							    "GFTH",
+							    data->fan_tachs[channel].cap,
+							    data->fan_tachs[channel].index,
+							    &value);
 
 			if (ret > 0) {
 				*val = value;
@@ -157,10 +157,10 @@ static int dasharo_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
 	} else if (type == hwmon_pwm) {
 		if (attr == hwmon_pwm_input) {
 			ret = dasharo_read_value_by_cap_idx(data,
-						      "GFDC",
-						      data->fan_tachs[channel].cap,
-						      data->fan_tachs[channel].index,
-						      &value);
+							    "GFDC",
+							    data->fan_tachs[channel].cap,
+							    data->fan_tachs[channel].index,
+							    &value);
 
 			if (ret > 0) {
 				*val = value;
@@ -376,6 +376,8 @@ static int dasharo_add(struct acpi_device *acpi_dev)
 static void dasharo_remove(struct acpi_device *acpi_dev)
 {
 	struct dasharo_data *data = acpi_driver_data(acpi_dev);
+
+	hwmon_device_unregister(data->hwmon);
 }
 
 static const struct acpi_device_id device_ids[] = {
