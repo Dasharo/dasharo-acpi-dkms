@@ -23,7 +23,7 @@ sudo apt install dkms
 Fedora:
 
 ```
-sudo dnf install dkms
+sudo dnf install dkms kernel-headers
 ```
 
 Install the driver:
@@ -37,7 +37,7 @@ sudo apt install ./dasharo-acpi-dkms_*.deb
 Fedora:
 
 ```
-sudo dnf install ./dasharo-acpi-dkms_*.rpm
+sudo dnf install ./dasharo-acpi-dkms-*.rpm
 ```
 
 To load the driver, simply reboot, or run the command:
@@ -59,7 +59,7 @@ sudo apt install lm-sensors
 Fedora:
 
 ```
-sudo dnf install lm-sensors
+sudo dnf install lm_sensors
 ```
 
 Run `sensors` in a terminal and observe the output. You should
