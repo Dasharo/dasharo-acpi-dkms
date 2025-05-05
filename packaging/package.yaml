@@ -3,19 +3,19 @@ meta:
   vendor: 3mdeb Sp. z o.o.
   maintainer: Michał Kopeć <michal.kopec@3mdeb.com>
 files:
-  "/usr/src/dasharo-acpi-0.0.1/dasharo-acpi.c":
+  "/usr/src/dasharo-acpi-0.9.0/dasharo-acpi.c":
     file: src/dasharo-acpi.c
     mode: "0644"
     user: "root"
-  "/usr/src/dasharo-acpi-0.0.1/dkms.conf":
+  "/usr/src/dasharo-acpi-0.9.0/dkms.conf":
     file: src/dkms.conf
     mode: "0644"
     user: "root"
-  "/usr/src/dasharo-acpi-0.0.1/Kbuild":
+  "/usr/src/dasharo-acpi-0.9.0/Kbuild":
     file: src/Kbuild
     mode: "0644"
     user: "root"
-  "/usr/src/dasharo-acpi-0.0.1/Makefile":
+  "/usr/src/dasharo-acpi-0.9.0/Makefile":
     file: src/Makefile
     mode: "0644"
     user: "root"
