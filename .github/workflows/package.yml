@@ -1,7 +1,16 @@
-# build-and-test.yml - Everything in one workflow
+# build-and-test.yml - Modern release workflow
 name: Build and Test DKMS Package
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - develop
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
 
 jobs:
   package:
@@ -28,7 +37,6 @@ jobs:
   test-deb:
     needs: package
     runs-on: ubuntu-24.04
-    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -48,3 +56,43 @@ jobs:
         sudo apt install -y ./dasharo-acpi-dkms*.deb
         sudo dkms status
         ls -la /usr/src/dasharo-acpi-*/
+
+ # Create release using modern GitHub CLI
+  release:
+    needs: [package, test-deb]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write  # Required for creating releases
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: version
+      run: |
+        # Remove 'v' prefix from tag (v0.9.1 -> 0.9.1)
+        VERSION=${GITHUB_REF_NAME#v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Version: $VERSION"
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Rename packages to match release naming pattern
+      run: |
+        mv dasharo-acpi-dkms.deb dasharo-acpi-dkms_${{ steps.version.outputs.version }}_amd64.deb
+        mv dasharo-acpi-dkms.rpm dasharo-acpi-dkms-${{ steps.version.outputs.version }}.x86_64.rpm
+
+        # Verify final files
+        ls -la *.deb *.rpm
+
+    - name: Create release with packages
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create ${{ github.ref_name }} \
+          --title "Dasharo ACPI DKMS ${{ github.ref_name }}" \
+          dasharo-acpi-dkms_${{ steps.version.outputs.version }}_amd64.deb \
+          dasharo-acpi-dkms-${{ steps.version.outputs.version }}.x86_64.rpm
