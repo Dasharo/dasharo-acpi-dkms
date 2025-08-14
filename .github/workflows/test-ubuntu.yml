@@ -1,0 +1,56 @@
+name: Test DKMS Package Installation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  test-dkms-installation:
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Show system information
+      run: |
+        echo "Kernel version: $(uname -r)"
+        echo "Ubuntu version: $(lsb_release -a)"
+    
+    - name: Install DKMS dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y dkms linux-headers-$(uname -r) build-essential
+    
+    - name: Verify kernel headers installation
+      run: |
+        echo "Checking kernel headers for $(uname -r):"
+        ls -la /lib/modules/$(uname -r)/build
+    
+    - name: Download DKMS package
+      run: |
+        wget https://github.com/Dasharo/dasharo-acpi-dkms/releases/latest/download/dasharo-acpi-dkms_0.9.0-1_amd64.deb
+    
+    - name: Install DKMS package
+      run: |
+        sudo apt install -y ./dasharo-acpi-dkms_*.deb
+    
+    - name: Verify DKMS installation
+      run: |
+        echo "DKMS status:"
+        sudo dkms status
+        
+        echo "Source directory:"
+        ls -la /usr/src/dasharo-acpi-*/
+        
+        echo "Looking for compiled module:"
+        find /lib/modules/$(uname -r) -name "*dasharo*" || echo "No compiled module found"
+    
+    - name: Show build logs on failure
+      if: failure()
+      run: |
+        echo "DKMS build logs:"
+        sudo find /var/lib/dkms/dasharo-acpi -name "make.log" -exec cat {} \; || echo "No build logs found"
