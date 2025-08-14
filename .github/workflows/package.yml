@@ -16,7 +16,7 @@ jobs:
     - uses: kentik/pkg@v1.0.0-rc8
       with:
         name: dasharo-acpi-dkms
-        version: 0.9.0
+        version: 0.9.1
         arch: x86_64
         format: ${{ matrix.format }}
         package: packaging/package.yaml
