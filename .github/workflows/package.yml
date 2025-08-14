@@ -1,3 +1,6 @@
+# build-and-test.yml - Everything in one workflow
+name: Build and Test DKMS Package
+
 on: [push]
 
 jobs:
@@ -10,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-
     - uses: kentik/pkg@v1.0.0-rc8
       with:
         name: dasharo-acpi-dkms
@@ -18,8 +20,31 @@ jobs:
         arch: x86_64
         format: ${{ matrix.format }}
         package: packaging/package.yaml
-
     - uses: actions/upload-artifact@v4
       with:
         path: "*.${{ matrix.format }}"
         name: dasharo-acpi-dkms.${{ matrix.format }}
+
+  test-deb:
+    needs: package
+    runs-on: ubuntu-24.04
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Download built .deb package
+      uses: actions/download-artifact@v4
+      with:
+        name: dasharo-acpi-dkms.deb
+    
+    - name: Install DKMS dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y dkms linux-headers-$(uname -r) build-essential
+    
+    - name: Install and test DKMS package
+      run: |
+        sudo apt install -y ./dasharo-acpi-dkms*.deb
+        sudo dkms status
+        ls -la /usr/src/dasharo-acpi-*/
