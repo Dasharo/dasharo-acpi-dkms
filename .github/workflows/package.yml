@@ -82,9 +82,9 @@ jobs:
 
     - name: Rename packages to match release naming pattern
       run: |
-        mv dasharo-acpi-dkms.deb dasharo-acpi-dkms_${{ steps.version.outputs.version }}_amd64.deb
-        mv dasharo-acpi-dkms.rpm dasharo-acpi-dkms-${{ steps.version.outputs.version }}.x86_64.rpm
-
+        # Artifacts are downloaded into directories, so we need to move files out
+        mv dasharo-acpi-dkms.deb/*.deb dasharo-acpi-dkms_${{ steps.version.outputs.version }}_amd64.deb
+        mv dasharo-acpi-dkms.rpm/*.rpm dasharo-acpi-dkms-${{ steps.version.outputs.version }}.x86_64.rpm
         # Verify final files
         ls -la *.deb *.rpm
 
